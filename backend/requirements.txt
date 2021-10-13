@@ -1,0 +1,2 @@
+djangorestframework-simplejwt
+django-rest-knox
