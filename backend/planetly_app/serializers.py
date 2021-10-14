@@ -1,20 +1,21 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from rest_framework import fields, serializers
-from planetly_app.models import UsageType, Usage
+from planetly_app.models import UsageType, Usage, Profile
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = User
-        fields = ('id', 'username', 'email')
+        model = Profile
+        fields = ('id', 'name')
 
 
 class UsageTypeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = UsageType
-        fields = ['id', 'name', 'unit', 'factor']
-        
+        fields = ['id', 'name', 'unit', 'factor', 'created_at', 'created_at']
+
+
 class UsageSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Usage
@@ -34,14 +35,3 @@ class RegisterSerializer(serializers.ModelSerializer):
             validated_data['password']
         )
         return user
-
-            
-class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField()
-    password = serializers.CharField()
-
-    def validate(self, data):
-        user = authenticate(**data)
-        if user and user.is_active:
-            return user
-        raise serializers.ValidationError("Incorrect Credentials")

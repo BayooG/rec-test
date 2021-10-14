@@ -17,28 +17,21 @@ from django.urls import path, include
 from django.contrib import admin
 from rest_framework import routers
 from knox import views as knox_views
-
-
 from planetly_app import views
 
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
-router.register(r'test', views.UsageTypeViewSet)
-# router.register(r'usage_type', views.UsageTypeViewSet)
-# router.register(r'usage', views.UsageViewSet)
+router.register(r'usage_type', views.UsageTypeViewSet)
+router.register(r'usage', views.UsageViewSet)
 
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('admin/', admin.site.urls),
+    
     path('api/register/', views.RegisterAPI.as_view(), name='register'),
-    path('api/login/', views.LoginAPI.as_view(), name='login'),
+    path('api/login/', views.LoginView.as_view(), name='login'),
     path('api/logout/', knox_views.LogoutView.as_view(), name='logout'),
     path('api/logoutall/', knox_views.LogoutAllView.as_view(), name='logoutall'),
-    
-    
-    path('admin/', admin.site.urls),
-    # path('api/auth/', include('knox.urls')),
-    # path('api/login/', views.LoginAPI.as_view(), name='login'),
-
 ]
